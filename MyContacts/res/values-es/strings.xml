@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Mis Contactos</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="adding">Agregar</string>
+    <string name="listing">Listar</string>
+    <string name="configure">Configurar</string>
+    <string name="exit">Salir</string>
+    <string name="about">Acerca de…</string>
+    <string name="aboutInfo">Aplicación que permite gestionar contactos y con 
+        funciones sociales.</string>
+    <string name="name">Nombre</string>
+    <string name="giveBack">Devolver</string>
+
+</resources>
