@@ -1,10 +1,12 @@
 package ec.edu.ucuenca.vazquez.mycontacts;
 
+import ec.edu.ucuenca.vazquez.db.MyContactsSQLiteOpenHelper;
 import ec.edu.ucuenca.vazquez.res.AlmacenContactosArray;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -123,6 +125,15 @@ public class MainActivity extends Activity {
 	                        });
 	        AlertDialog alert = builder.create();
 	        alert.show();
+	        
+	        MyContactsSQLiteOpenHelper myContactsOH = new MyContactsSQLiteOpenHelper(this, "DBContacts", null, 1);
+	        SQLiteDatabase db = myContactsOH.getWritableDatabase();
+	        
+	        if(db != null) {
+	        	db.execSQL("INSERT INTO Contacts (name) " +
+	        			"VALUES ('" + data.getStringExtra("resultado") +"')");
+	        	db.close();
+	        }
 		}
 	}
 
