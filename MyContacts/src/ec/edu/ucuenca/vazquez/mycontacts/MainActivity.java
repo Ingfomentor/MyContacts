@@ -4,10 +4,13 @@ import ec.edu.ucuenca.vazquez.db.MyContactsSQLiteOpenHelper;
 import ec.edu.ucuenca.vazquez.res.AlmacenContactosArray;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -126,12 +129,39 @@ public class MainActivity extends Activity {
 	        AlertDialog alert = builder.create();
 	        alert.show();
 	        
-	        MyContactsSQLiteOpenHelper myContactsOH = new MyContactsSQLiteOpenHelper(this, "DBContacts", null, 1);
+	        MyContactsSQLiteOpenHelper myContactsOH = new MyContactsSQLiteOpenHelper(this,
+	        		"DBContacts", null, 1);
 	        SQLiteDatabase db = myContactsOH.getWritableDatabase();
 	        
 	        if(db != null) {
-	        	db.execSQL("INSERT INTO Contacts (name) " +
-	        			"VALUES ('" + data.getStringExtra("resultado") +"')");
+	        	//db.execSQL("INSERT INTO Contacts (name) " +
+	        		//	"VALUES ('" + data.getStringExtra("resultado") +"')");
+	        	
+	        	ContentValues newReg = new ContentValues();
+	        	newReg.put("name", data.getStringExtra("resultado"));
+	        		        	
+	        	db.insert("contacts", null, newReg);
+	        	
+	        	db.update("contacts", newReg, "name = 'angel'", null);
+	        	db.update("contacts", newReg, "name = ?", new String[]{"angel"});
+	        	db.update("contacts", newReg, "name = ? OR name = ?", new String[]{"angel", "oswaldo"});
+	        	
+	        	db.delete("contacts", "name = 'angel'", null);
+	        	db.delete("contacts", "name = ?", new String[]{"angel"});
+	        	        		        	
+	        	Cursor cursor = db.rawQuery("SELECT * FROM contacts WHERE name = 'angel'", null);
+	        	cursor = db.rawQuery("SELECT * FROM contacts WHERE name = ?", new String[]{"angel"});
+	        	
+	        	cursor = db.query("contacts", new String[]{"name"}, "name = ?", new String[]{"angel"}, null, null, null);
+	        	
+	        	if(cursor.moveToFirst()) {
+	        		do {
+	        			String nombre = cursor.getString(0);
+	        			Double doublevariable = cursor.getDouble(1);
+	        			Log.w("MyContacts", nombre);
+	        		} while(cursor.moveToNext());
+	        	}
+	        	//http://developer.android.com/reference/android/database/Cursor.html
 	        	db.close();
 	        }
 		}
